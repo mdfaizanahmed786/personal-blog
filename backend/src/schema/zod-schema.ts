@@ -21,4 +21,11 @@ const createPostSchema=z.object({
     userId: z.string()
 })
 
-export {createPostSchema, signUpUserSchema, loginUserSchema}
+const editPostSchema=z.object({
+    title: z.string().min(3, {message:"Provide more than 3 characters"}).optional(),
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+    content:z.string().min(3).optional(),
+    userId: z.string().optional()
+})
+
+export {createPostSchema, signUpUserSchema, loginUserSchema, editPostSchema}
