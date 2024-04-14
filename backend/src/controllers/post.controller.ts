@@ -39,6 +39,10 @@ const getAllPosts = async (c: Context, next: Next) => {
 
 const deletePost = async (c: Context, next: Next) => {
   const userId = c.get("id");
+  const postId=c.req.query("postId")
+    if(!postId){
+        return c.json({success:false, message:"Provide a post id"}, 400)
+    }
   if (!userId) {
     return c.json(
       { success: false, message: "You are not authenticated" },
@@ -53,6 +57,7 @@ const deletePost = async (c: Context, next: Next) => {
     await prisma.posts.delete({
       where: {
         userId,
+        id:postId
       },
     });
 
@@ -64,6 +69,11 @@ const deletePost = async (c: Context, next: Next) => {
 
 const editPost = async (c: Context, next: Next) => {
   const userId = c.get("id");
+  const postId=c.req.query("postId")
+  if(!postId){
+    return c.json({success:false, message:"Provide a post id"}, 400)
+  }
+
   const { body } = c;
 
   if (!userId) {
@@ -95,6 +105,7 @@ const editPost = async (c: Context, next: Next) => {
       },
       where: {
         userId,
+        id:postId
       },
     });
 
