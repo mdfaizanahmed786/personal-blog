@@ -20,8 +20,8 @@ app.use(prettyJSON())
 
 // routes
 
-app.route("/v1/api/post", posts)
-app.route("/v1/api/user", users)
+app.route("/api/v1/post", posts)
+app.route("/api/v1/user", users)
 
 // app.notFound((c) => {
 //   return c.text('Custom 404 Message', 404)
