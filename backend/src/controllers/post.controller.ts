@@ -5,7 +5,7 @@ import { createPostSchema, editPostSchema } from "../schema/zod-schema";
 
 const getAllPosts = async (c: Context, next: Next) => {
   const { page } = c.req.query();
- 
+
   const userId = c.get("id");
   if (!userId) {
     return c.json(
@@ -23,9 +23,26 @@ const getAllPosts = async (c: Context, next: Next) => {
     const posts = await prisma.posts.findMany({
       where: {
         userId,
+    
       },
       select: {
-        user: true,
+        user: {
+          select: {
+            name: true,
+            age: true,
+            username: true,
+          },
+        },
+
+        title: true,
+        content: true,
+        slug: true,
+        published: true,
+        thumbnail: true,
+        createdAt: true,
+        updatedAt: true,
+
+
       },
 
       skip,
@@ -34,17 +51,17 @@ const getAllPosts = async (c: Context, next: Next) => {
 
     return c.json({ success: true, posts }, 200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     await next();
   }
 };
 
 const deletePost = async (c: Context, next: Next) => {
   const userId = c.get("id");
-  const postId=c.req.query("postId")
-    if(!postId){
-        return c.json({success:false, message:"Provide a post id"}, 400)
-    }
+  const postId = c.req.query("postId");
+  if (!postId) {
+    return c.json({ success: false, message: "Provide a post id" }, 400);
+  }
   if (!userId) {
     return c.json(
       { success: false, message: "You are not authenticated" },
@@ -59,21 +76,21 @@ const deletePost = async (c: Context, next: Next) => {
     await prisma.posts.delete({
       where: {
         userId,
-        id:postId
+        id: postId,
       },
     });
 
     return c.json({ success: true, message: "Deleted post" }, 200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     await next();
   }
 };
 
 const editPost = async (c: Context, next: Next) => {
   const userId = c.get("id");
- 
-  const body=await c.req.json()
+
+  const body = await c.req.json();
   if (!userId) {
     return c.json(
       { success: false, message: "You are not authenticated" },
@@ -109,14 +126,14 @@ const editPost = async (c: Context, next: Next) => {
 
     return c.json({ success: true, message: "Edited post" }, 200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     await next();
   }
 };
 
 const addPost = async (c: Context, next: Next) => {
+  const body = await c.req.json();
   const userId = c.get("id");
-  const body=await c.req.json()
   if (!userId) {
     return c.json(
       { success: false, message: "You are not authenticated" },
@@ -136,22 +153,20 @@ const addPost = async (c: Context, next: Next) => {
   }
 
   try {
-    await prisma.posts.update({
+    await prisma.posts.create({
       data: {
         title: parseEditPostsSchema.data.title,
         content: parseEditPostsSchema.data.content,
         slug: parseEditPostsSchema.data.slug,
         published: parseEditPostsSchema.data.published,
         thumbnail: parseEditPostsSchema.data.thumbnail,
-      },
-      where: {
         userId,
       },
     });
 
     return c.json({ success: true, message: "added post" }, 200);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     await next();
   }
 };

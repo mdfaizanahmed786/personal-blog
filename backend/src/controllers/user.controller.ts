@@ -82,10 +82,17 @@ const getAllUsers = async (c: Context, next: Next) => {
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
   try {
-    const users = await prisma.user.findMany()
-    console.log(users)
+    const users = await prisma.user.findMany({
+        select:{
+            id:true,
+            name:true,
+            age:true,
+            username:true
+        },
+        
+    })
 
-    return  c.json({ success: true, users }, 200);
+    return  c.json({ success: true, users}, 200);
   } catch (error) {
     console.log(error)
     await next();
