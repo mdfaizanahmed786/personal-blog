@@ -89,7 +89,9 @@ const editPost = async (c: Context, next: Next) => {
       data: {
         title: parseEditPostsSchema.data.title ?? "",
         content: parseEditPostsSchema.data.content ?? "",
-        slug: parseEditPostsSchema.data.slug ?? "" ,
+        slug: parseEditPostsSchema.data.slug ?? "",
+        published: parseEditPostsSchema.data.published ?? false,
+        thumbnail: parseEditPostsSchema.data.thumbnail ?? "",
       },
       where: {
         userId,
@@ -102,44 +104,46 @@ const editPost = async (c: Context, next: Next) => {
   }
 };
 
-const addPost = async (c:Context, next:Next) => {
-    const userId = c.get("id");
-    const { body } = c;
-  
-    if (!userId) {
-      return c.json(
-        { success: false, message: "You are not authenticated" },
-        400
-      );
-    }
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-  
-    const parseEditPostsSchema = editPostSchema.safeParse(body);
-    if (!parseEditPostsSchema.success) {
-      return c.json({
-        success: false,
-        messsage: parseEditPostsSchema.error.cause,
-      });
-    }
-  
-    try {
-      await prisma.posts.update({
-        data: {
-          title: parseEditPostsSchema.data.title,
-          content: parseEditPostsSchema.data.content,
-          slug: parseEditPostsSchema.data.slug,
-        },
-        where: {
-          userId,
-        },
-      });
-  
-      return c.json({ success: true, message: "added post" }, 200);
-    } catch (error) {
-      await next();
-    }
+const addPost = async (c: Context, next: Next) => {
+  const userId = c.get("id");
+  const { body } = c;
+
+  if (!userId) {
+    return c.json(
+      { success: false, message: "You are not authenticated" },
+      400
+    );
+  }
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const parseEditPostsSchema = editPostSchema.safeParse(body);
+  if (!parseEditPostsSchema.success) {
+    return c.json({
+      success: false,
+      messsage: parseEditPostsSchema.error.cause,
+    });
+  }
+
+  try {
+    await prisma.posts.update({
+      data: {
+        title: parseEditPostsSchema.data.title,
+        content: parseEditPostsSchema.data.content,
+        slug: parseEditPostsSchema.data.slug,
+        published: parseEditPostsSchema.data.published,
+        thumbnail: parseEditPostsSchema.data.thumbnail,
+      },
+      where: {
+        userId,
+      },
+    });
+
+    return c.json({ success: true, message: "added post" }, 200);
+  } catch (error) {
+    await next();
+  }
 };
 
 export { getAllPosts, deletePost, editPost, addPost };

@@ -18,14 +18,19 @@ const createPostSchema=z.object({
     title: z.string().min(3, {message:"Provide more than 3 characters"}),
     slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     content:z.string().min(3),
-    userId: z.string()
+    userId: z.string(),
+    published: z.boolean().optional(),
+    thumbnail: z.string()
 })
 
 const editPostSchema=z.object({
     title: z.string().min(3, {message:"Provide more than 3 characters"}).optional(),
     slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     content:z.string().min(3).optional(),
-    userId: z.string().optional()
+    userId: z.string().optional(),
+    thumbnail: z.string().optional(),
+    published: z.boolean().optional()
+
 })
 
 export {createPostSchema, signUpUserSchema, loginUserSchema, editPostSchema}
