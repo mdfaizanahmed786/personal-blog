@@ -25,7 +25,7 @@ const signUpUser = async (c: Context, next: Next) => {
         password,
       },
     });
-    const token = Jwt.sign({ id }, c.env.JWT_SECRET);
+    const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
 
     return c.json({ success: true, message: "user created", token }, 201);
   } catch (error) {
@@ -54,7 +54,7 @@ const loginUser = async (c: Context, next: Next) => {
       return c.json({ success: false }, 400);
     }
 
-    const token = Jwt.sign({ id: result.id }, c.env.JWT_SECRET);
+    const token = await Jwt.sign({ id: result.id }, c.env.JWT_SECRET);
 
     return c.json(
       { success: true, message: "Successfully logged in", token },
@@ -78,9 +78,10 @@ const getAllUsers = async (c: Context, next: Next) => {
     await next();
   }
 };
+
 const deleteUser = async (c: Context, next: Next) => {
   try {
-    const userId = c.req.query("id");
+    const userId = c.get("id");
     if (!userId) {
       return c.json({ success: false, message: "Provide a user id" }, 400);
     }
