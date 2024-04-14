@@ -5,7 +5,9 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 
 const signUpUser = async (c: Context, next: Next) => {
-  const { body } = c;
+  const body=await c.req.json()
+
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());

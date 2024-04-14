@@ -1,24 +1,24 @@
 import { z } from "zod";
 
 const signUpUserSchema=z.object({
-    name: z.string().min(3, {message:"Please enter a name more that three characters"}),
-    username: z.string().min(3, {message:"Enter username more than 3 characters"}),
+    name: z.string().min(3, {message:"Please enter a name more that three characters"}).trim(),
+    username: z.string().min(3, {message:"Enter username more than 3 characters"}).trim().toLowerCase(),
     age:z.string().optional(),
     password:z.string()
 
 })
 
 const loginUserSchema=z.object({
-    username:z.string(),
-    password:z.string()
+    username:z.string().trim().toLowerCase(),
+    password:z.string().min(3).max(20)
 
 })
 
 const createPostSchema=z.object({
-    title: z.string().min(3, {message:"Provide more than 3 characters"}),
-    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    content:z.string().min(3),
-    userId: z.string(),
+    title: z.string().trim().min(3, {message:"Provide more than 3 characters"}),
+    slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    content:z.string().trim().min(3),
+    userId: z.string().uuid(),
     published: z.boolean().optional(),
     thumbnail: z.string()
 })
@@ -29,6 +29,7 @@ const editPostSchema=z.object({
     content:z.string().min(3).optional(),
     userId: z.string().optional(),
     thumbnail: z.string().optional(),
+    postId: z.string().uuid(),
     published: z.boolean().optional()
 
 })

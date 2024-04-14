@@ -69,10 +69,7 @@ const deletePost = async (c: Context, next: Next) => {
 
 const editPost = async (c: Context, next: Next) => {
   const userId = c.get("id");
-  const postId=c.req.query("postId")
-  if(!postId){
-    return c.json({success:false, message:"Provide a post id"}, 400)
-  }
+ 
 
   const { body } = c;
 
@@ -86,7 +83,7 @@ const editPost = async (c: Context, next: Next) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const parseEditPostsSchema = createPostSchema.safeParse(body);
+  const parseEditPostsSchema = editPostSchema.safeParse(body);
   if (!parseEditPostsSchema.success) {
     return c.json({
       success: false,
@@ -105,7 +102,7 @@ const editPost = async (c: Context, next: Next) => {
       },
       where: {
         userId,
-        id:postId
+        id: parseEditPostsSchema.data.postId,
       },
     });
 
@@ -129,7 +126,7 @@ const addPost = async (c: Context, next: Next) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const parseEditPostsSchema = editPostSchema.safeParse(body);
+  const parseEditPostsSchema = createPostSchema.safeParse(body);
   if (!parseEditPostsSchema.success) {
     return c.json({
       success: false,
