@@ -127,7 +127,6 @@ Object.keys(parseEditPostsSchema.data).forEach(field => {
   }
 });
 
-// Perform the update operation
 await prisma.posts.update(postDataToUpdate);
 
     return c.json({ success: true, message: "Edited post" }, 200);
