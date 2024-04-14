@@ -23,9 +23,9 @@ app.use(prettyJSON())
 app.route("/v1/api/post", posts)
 app.route("/v1/api/user", users)
 
-app.notFound((c) => {
-  return c.text('Custom 404 Message', 404)
-})
+// app.notFound((c) => {
+//   return c.text('Custom 404 Message', 404)
+// })
 app.onError(erroMiddleware)
 
 export default app
