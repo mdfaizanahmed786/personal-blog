@@ -31,6 +31,7 @@ const getAllPosts = async (c: Context, next: Next) => {
             name: true,
             age: true,
             username: true,
+            fullname: true,
           },
         },
         id:true,
@@ -41,6 +42,7 @@ const getAllPosts = async (c: Context, next: Next) => {
         thumbnail: true,
         createdAt: true,
         updatedAt: true,
+
 
 
       },

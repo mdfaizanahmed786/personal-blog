@@ -16,19 +16,20 @@ model User {
   posts     Posts[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  fullname  String
 
   @@index([username, name])
 }
 
 model Posts {
-  id        String  @unique @default(uuid())
+  id        String   @unique @default(uuid())
   title     String
-  slug      String  @unique
+  slug      String   @unique
   content   String
   userId    String
-  published Boolean @default(false)
+  published Boolean  @default(false)
   thumbnail String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

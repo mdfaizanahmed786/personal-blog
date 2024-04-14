@@ -4,7 +4,8 @@ const signUpUserSchema=z.object({
     name: z.string().min(3, {message:"Please enter a name more that three characters"}).trim(),
     username: z.string().min(3, {message:"Enter username more than 3 characters"}).trim().toLowerCase(),
     age:z.string().optional(),
-    password:z.string()
+    password:z.string(),
+    fullname:z.string().trim()
 
 })
 

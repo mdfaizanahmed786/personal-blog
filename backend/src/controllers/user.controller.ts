@@ -17,7 +17,7 @@ const signUpUser = async (c: Context, next: Next) => {
   if (!parseUserData.success) {
     return c.json({ success: false, message: parseUserData.error }, 400);
   }
-  const { name, age, username, password } = parseUserData.data;
+  const { name, age, username, password, fullname } = parseUserData.data;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -27,7 +27,8 @@ const signUpUser = async (c: Context, next: Next) => {
         name,
         age,
         username,
-        password: hashedPassword
+        password: hashedPassword,
+        fullname
       },
     });
     const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
@@ -87,7 +88,8 @@ const getAllUsers = async (c: Context, next: Next) => {
             id:true,
             name:true,
             age:true,
-            username:true
+            username:true,
+            fullname: true
         },
         
     })
