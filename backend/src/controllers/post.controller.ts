@@ -1,7 +1,7 @@
 import { Context, Next } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { createPostSchema, editPostSchema } from "../schema/zod-schema";
+import { createPostSchema, editPostSchema } from "@faizanpkg786/blog";
 
 const getAllPosts = async (c: Context, next: Next) => {
   const { page } = c.req.query();

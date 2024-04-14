@@ -33,4 +33,9 @@ const editPostSchema=z.object({
 
 })
 
-export {createPostSchema, signUpUserSchema, loginUserSchema, editPostSchema}
+export type SignUpUser=z.infer<typeof signUpUserSchema>
+export type LoginUser=z.infer<typeof loginUserSchema>
+export type CreatePost=z.infer<typeof createPostSchema>
+export type EditPost=z.infer<typeof editPostSchema>
+
+export {signUpUserSchema, loginUserSchema, createPostSchema, editPostSchema}
