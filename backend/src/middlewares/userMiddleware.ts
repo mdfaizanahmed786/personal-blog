@@ -3,7 +3,6 @@ import { Jwt } from "hono/utils/jwt";
 
 const userMiddleware = async (c: Context, next: Next) => {
   const token = c.req.header("authorization")!;
-  console.log(token);
   if (!token) {
     return c.json({success:false, message:"You are not authenticated"}, 403)
   }

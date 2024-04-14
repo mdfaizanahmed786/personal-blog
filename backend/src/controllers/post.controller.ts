@@ -33,7 +33,7 @@ const getAllPosts = async (c: Context, next: Next) => {
             username: true,
           },
         },
-
+        id:true,
         title: true,
         content: true,
         slug: true,
@@ -109,20 +109,26 @@ const editPost = async (c: Context, next: Next) => {
     });
   }
 
+
   try {
-    await prisma.posts.update({
-      data: {
-        title: parseEditPostsSchema.data.title ?? "",
-        content: parseEditPostsSchema.data.content ?? "",
-        slug: parseEditPostsSchema.data.slug ?? "",
-        published: parseEditPostsSchema.data.published ?? false,
-        thumbnail: parseEditPostsSchema.data.thumbnail ?? "",
-      },
-      where: {
-        userId,
-        id: parseEditPostsSchema.data.postId,
-      },
-    });
+   const postDataToUpdate = {
+  where: {
+    userId,
+    id: parseEditPostsSchema.data.postId,
+  },
+  data: {},
+};
+
+Object.keys(parseEditPostsSchema.data).forEach(field => {
+// @ts-ignore
+  if (field !== 'postId' && parseEditPostsSchema.data[field] !== undefined) {
+    // @ts-ignore
+    postDataToUpdate.data[field] = parseEditPostsSchema.data[field];
+  }
+});
+
+// Perform the update operation
+await prisma.posts.update(postDataToUpdate);
 
     return c.json({ success: true, message: "Edited post" }, 200);
   } catch (error) {

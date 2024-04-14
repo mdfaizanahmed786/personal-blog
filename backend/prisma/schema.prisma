@@ -25,7 +25,7 @@ model Posts {
   title     String
   slug      String  @unique
   content   String
-  userId    String  @unique
+  userId    String
   published Boolean @default(false)
   thumbnail String
   user      User    @relation(fields: [userId], references: [id])
