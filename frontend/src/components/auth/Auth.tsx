@@ -1,21 +1,10 @@
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import { userRouteInstance } from "../../lib/axios";
-
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
+import { RootState } from "../../store/store";
 
 function Auth() {
-    useEffect(()=>{
-        const userSession=async()=>{
-           const response=await userRouteInstance.get("")
-        }
-    },[])
-
-  return (
-    <>
-      <div>Hello this is auth component</div>
-      <Outlet />
-    </>
-  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  return <>{isAuthenticated ? <Navigate to="/" replace={true}/> : <Outlet />}</>;
 }
 
 export default Auth;
