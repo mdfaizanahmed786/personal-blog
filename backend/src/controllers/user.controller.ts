@@ -40,7 +40,18 @@ const signUpUser = async (c: Context, next: Next) => {
     });
     const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
 
-    return c.json({ success: true, message: "user created", token }, 201);
+    return c.json(
+      {
+        success: true,
+        message: "user created",
+        token,
+        user: {
+          username,
+          id,
+        },
+      },
+      201
+    );
   } catch (error) {
     await next();
   }
@@ -122,7 +133,7 @@ const deleteUser = async (c: Context, next: Next) => {
       },
     });
 
-    return c.json({ success: true, users, message:"user deleted" }, 200);
+    return c.json({ success: true, users, message: "user deleted" }, 200);
   } catch (error) {
     console.log(error);
     await next();
