@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { createPostSchema, editPostSchema } from "@faizanpkg786/blog";
 
-const getAllPosts = async (c: Context, next: Next) => {
+const getAllUserPosts = async (c: Context, next: Next) => {
   const { page } = c.req.query();
 
   const userId = c.get("id");
@@ -23,9 +23,8 @@ const getAllPosts = async (c: Context, next: Next) => {
     const posts = await prisma.posts.findMany({
       where: {
         userId,
-    
       },
-      select: {
+      include: {
         user: {
           select: {
             name: true,
@@ -34,23 +33,36 @@ const getAllPosts = async (c: Context, next: Next) => {
             fullname: true,
           },
         },
-        id:true,
-        title: true,
-        content: true,
-        slug: true,
-        published: true,
-        thumbnail: true,
-        createdAt: true,
-        updatedAt: true,
-
-
-
       },
-
       skip,
       take: itemsPerPage,
     });
 
+    return c.json({ success: true, posts }, 200);
+  } catch (error) {
+    console.log(error);
+    await next();
+  }
+};
+
+const getAllPosts = async (c: Context, next: Next) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const posts = await prisma.posts.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            age: true,
+            username: true,
+            fullname: true,
+          },
+        },
+      },
+    });
     return c.json({ success: true, posts }, 200);
   } catch (error) {
     console.log(error);
@@ -111,25 +123,27 @@ const editPost = async (c: Context, next: Next) => {
     });
   }
 
-
   try {
-   const postDataToUpdate = {
-  where: {
-    userId,
-    id: parseEditPostsSchema.data.postId,
-  },
-  data: {},
-};
+    const postDataToUpdate = {
+      where: {
+        userId,
+        id: parseEditPostsSchema.data.postId,
+      },
+      data: {},
+    };
 
-Object.keys(parseEditPostsSchema.data).forEach(field => {
-// @ts-ignore
-  if (field !== 'postId' && parseEditPostsSchema.data[field] !== undefined) {
-    // @ts-ignore
-    postDataToUpdate.data[field] = parseEditPostsSchema.data[field];
-  }
-});
+    Object.keys(parseEditPostsSchema.data).forEach((field) => {
+      if (
+        field !== "postId" &&
+        // @ts-ignore
+        parseEditPostsSchema.data[field] !== undefined
+      ) {
+        // @ts-ignore
+        postDataToUpdate.data[field] = parseEditPostsSchema.data[field];
+      }
+    });
 
-await prisma.posts.update(postDataToUpdate);
+    await prisma.posts.update(postDataToUpdate);
 
     return c.json({ success: true, message: "Edited post" }, 200);
   } catch (error) {
@@ -178,4 +192,4 @@ const addPost = async (c: Context, next: Next) => {
   }
 };
 
-export { getAllPosts, deletePost, editPost, addPost };
+export { getAllUserPosts, deletePost, editPost, addPost, getAllPosts };

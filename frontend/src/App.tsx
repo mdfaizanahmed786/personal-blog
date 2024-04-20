@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import store from "./store/store";
+import { Toaster } from "react-hot-toast";
 const Auth = React.lazy(() => import("./components/auth/Auth"));
 const Signup = React.lazy(() => import("./components/auth/Signup"));
 const Login = React.lazy(() => import("./components/auth/Login"));
@@ -19,6 +20,7 @@ function SuspenseLayout() {
 function App() {
   return (
     <Provider store={store}>
+      <div><Toaster/></div>
       <Routes>
         <Route element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
