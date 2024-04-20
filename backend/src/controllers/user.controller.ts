@@ -122,7 +122,7 @@ const deleteUser = async (c: Context, next: Next) => {
       },
     });
 
-    return c.json({ success: true, users }, 200);
+    return c.json({ success: true, users, message:"user deleted" }, 200);
   } catch (error) {
     console.log(error);
     await next();
