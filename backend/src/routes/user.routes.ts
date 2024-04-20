@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import {
   deleteUser,
   getAllUsers,
+  getUserInfo,
   loginUser,
   signUpUser,
 } from "../controllers/user.controller";
@@ -15,5 +16,7 @@ app.post("/login", loginUser);
 app.get("/all", userMiddleware,  getAllUsers);
 
 app.delete("/", userMiddleware, deleteUser);
+
+app.get("/me", userMiddleware, getUserInfo)
 
 export default app;
