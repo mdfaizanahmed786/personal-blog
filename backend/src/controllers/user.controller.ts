@@ -16,6 +16,14 @@ const signUpUser = async (c: Context, next: Next) => {
   if (!parseUserData.success) {
     return c.json({ success: false, message: parseUserData.error }, 400);
   }
+
+  const checkUserNameExists = await prisma.user.findFirst({
+    where: { username: parseUserData.data.username },
+  });
+
+  if (checkUserNameExists) {
+    return c.json({ success: false, message: "Username already exists" }, 400);
+  }
   const { name, age, username, password, fullname } = parseUserData.data;
 
   const hashedPassword = await bcrypt.hash(password, 10);

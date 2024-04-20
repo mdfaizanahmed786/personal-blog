@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { userRouteInstance } from "../../lib/axios";
+import { type SignUpUser } from "@faizanpkg786/blog";
+
 
 function Signup() {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<SignUpUser>({
     username: "",
     fullname: "",
     age: "",
     password: "",
+    name: "",
+    
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
