@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-const Auth = React.lazy(() => import("./components/auth/Auth"));
+import Auth from "./components/auth/Auth";
 
 const NotFound = React.lazy(() => import("./components/NotFound"));
 const About = React.lazy(() => import("./components/About"));
@@ -71,18 +71,11 @@ function App() {
           }
         />
 
-        <Route path="*" element={<NotFound />} />
-        <Route
-          path="/auth"
-          element={
-            <Suspense fallback={<div>Loading</div>}>
-              <Auth />
-            </Suspense>
-          }
-        >
+        <Route path="/auth" element={<Auth />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </>
