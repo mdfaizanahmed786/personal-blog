@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,21 +14,10 @@ import { Cookies } from "react-cookie";
 import { userRouteInstance } from "./lib/axios";
 import { setUser } from "./features/slices/authSlice";
 import SingleBlog from "./components/SingleBlog";
-import CreateBlog from "./components/CreateBlog";
+const CreateBlog = React.lazy(() => import("./components/CreateBlog"));
 
 const cookies = new Cookies();
-function SuspenseLayout() {
-  return (
-    <>
-      <Header />
 
-      <React.Suspense fallback={<>Loading..</>}>
-        <Outlet />
-      </React.Suspense>
-      <Footer />
-    </>
-  );
-}
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -50,23 +39,65 @@ function App() {
   }, [dispatch]);
   return (
     <>
+      <Header />
       <div>
         <Toaster />
       </div>
       <Routes>
-        <Route path="/" element={<SuspenseLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="/blog/:slug" element={<SingleBlog />} />
-          <Route path="/blog/create" element={<CreateBlog />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<div>Loading</div>}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="about"
+          element={
+            <Suspense fallback={<div>Loading</div>}>
+              <About />
+            </Suspense>
+          }
+        />
+        <Route path="/blog/:slug" element={<SingleBlog />} />
+        <Route
+          path="/blog/create"
+          element={
+            <Suspense fallback={<div>Loading</div>}>
+              <CreateBlog />
+            </Suspense>
+          }
+        />
 
-          <Route path="*" element={<NotFound />} />
-          <Route path="/auth" element={<Auth />}>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
+        <Route path="*" element={<NotFound />} />
+        <Route
+          path="/auth"
+          element={
+            <Suspense fallback={<div>Loading</div>}>
+              <Auth />
+            </Suspense>
+          }
+        >
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<div>Loading</div>}>
+                <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <Suspense fallback={<div>Loading</div>}>
+                <Signup />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
+      <Footer />
     </>
   );
 }
