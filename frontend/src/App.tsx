@@ -5,8 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 const Auth = React.lazy(() => import("./components/auth/Auth"));
-const Signup = React.lazy(() => import("./components/auth/Signup"));
-const Login = React.lazy(() => import("./components/auth/Login"));
+
 const NotFound = React.lazy(() => import("./components/NotFound"));
 const About = React.lazy(() => import("./components/About"));
 const Home = React.lazy(() => import("./components/Home"));
@@ -14,6 +13,8 @@ import { Cookies } from "react-cookie";
 import { userRouteInstance } from "./lib/axios";
 import { setUser } from "./features/slices/authSlice";
 import SingleBlog from "./components/SingleBlog";
+import Login from "./components/auth/Login";
+import Signup from "./components/auth/Signup";
 const CreateBlog = React.lazy(() => import("./components/CreateBlog"));
 
 const cookies = new Cookies();
@@ -79,22 +80,8 @@ function App() {
             </Suspense>
           }
         >
-          <Route
-            path="login"
-            element={
-              <Suspense fallback={<div>Loading</div>}>
-                <Login />
-              </Suspense>
-            }
-          />
-          <Route
-            path="signup"
-            element={
-              <Suspense fallback={<div>Loading</div>}>
-                <Signup />
-              </Suspense>
-            }
-          />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
         </Route>
       </Routes>
       <Footer />
