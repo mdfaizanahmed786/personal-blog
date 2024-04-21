@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import store from "./store/store";
 import { Toaster } from "react-hot-toast";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 const Auth = React.lazy(() => import("./components/auth/Auth"));
 const Signup = React.lazy(() => import("./components/auth/Signup"));
 const Login = React.lazy(() => import("./components/auth/Login"));
@@ -12,15 +14,22 @@ const Home = React.lazy(() => import("./components/Home"));
 
 function SuspenseLayout() {
   return (
-    <React.Suspense fallback={<>Loading..</>}>
-      <Outlet />
-    </React.Suspense>
+    <>
+      <Header />
+
+      <React.Suspense fallback={<>Loading..</>}>
+        <Outlet />
+      </React.Suspense>
+      <Footer />
+    </>
   );
 }
 function App() {
   return (
     <Provider store={store}>
-      <div><Toaster/></div>
+      <div>
+        <Toaster />
+      </div>
       <Routes>
         <Route element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
