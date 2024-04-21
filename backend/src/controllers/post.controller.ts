@@ -44,6 +44,39 @@ const getAllUserPosts = async (c: Context, next: Next) => {
   }
 };
 
+const getSinglePostWithSlug = async (c: Context, next: Next) => {
+  const slug = c.req.query("slug");
+  if (!slug) {
+    return c.json({ success: false, message: "Provide a post slug" }, 400);
+  }
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const post = await prisma.posts.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            fullname: true,
+          },
+        },
+      },
+    });
+
+    return c.json({ success: true, post }, 200);
+  } catch (error) {
+    console.log(error);
+    await next();
+  }
+};
+
 const getAllPosts = async (c: Context, next: Next) => {
   try {
     const prisma = new PrismaClient({
@@ -191,4 +224,4 @@ const addPost = async (c: Context, next: Next) => {
   }
 };
 
-export { getAllUserPosts, deletePost, editPost, addPost, getAllPosts };
+export { getAllUserPosts, deletePost, editPost, addPost, getAllPosts, getSinglePostWithSlug };

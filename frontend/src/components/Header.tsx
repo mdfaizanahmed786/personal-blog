@@ -23,7 +23,12 @@ function Header() {
         <nav className="hidden md:self-end md:flex items-center space-x-4">
         
         {user ? (
-          <p className="text-sm">Welcome, {user.username}</p>
+          <>
+          <Link to="">Welcome, {user.username}</Link>
+          <Link className="hover:underline" to="">
+            Logout
+          </Link>
+          </>
         ) : (
           <>
             <Link className="hover:underline" to="/auth/login">

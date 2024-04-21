@@ -13,6 +13,7 @@ const Home = React.lazy(() => import("./components/Home"));
 import { Cookies } from "react-cookie";
 import { userRouteInstance } from "./lib/axios";
 import { setUser } from "./features/slices/authSlice";
+import SingleBlog from "./components/SingleBlog";
 
 const cookies= new Cookies();
 function SuspenseLayout() {
@@ -55,7 +56,7 @@ function App() {
         <Route element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="/blog/:id" element={<Auth />}/>
+          <Route path="/blog/:slug" element={<SingleBlog />}/>
           <Route path="*" element={<NotFound />} />
           <Route path="/auth" element={<Auth />}>
             <Route path="login" element={<Login />} />
