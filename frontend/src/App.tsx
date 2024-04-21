@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import {  useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -6,17 +6,16 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Auth from "./components/auth/Auth";
 
-const NotFound = React.lazy(() => import("./components/NotFound"));
-const About = React.lazy(() => import("./components/About"));
-const Home = React.lazy(() => import("./components/Home"));
+import NotFound from "./components/NotFound";
+import About from "./components/About";
+import Home from "./components/Home";
 import { Cookies } from "react-cookie";
 import { userRouteInstance } from "./lib/axios";
 import { setUser } from "./features/slices/authSlice";
 import SingleBlog from "./components/SingleBlog";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
-const CreateBlog = React.lazy(() => import("./components/CreateBlog"));
-
+import CreateBlog from "./components/CreateBlog";
 const cookies = new Cookies();
 
 function App() {
@@ -45,31 +44,10 @@ function App() {
         <Toaster />
       </div>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense fallback={<div>Loading</div>}>
-              <Home />
-            </Suspense>
-          }
-        />
-        <Route
-          path="about"
-          element={
-            <Suspense fallback={<div>Loading</div>}>
-              <About />
-            </Suspense>
-          }
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="about" element={<About />} />
         <Route path="/blog/:slug" element={<SingleBlog />} />
-        <Route
-          path="/blog/create"
-          element={
-            <Suspense fallback={<div>Loading</div>}>
-              <CreateBlog />
-            </Suspense>
-          }
-        />
+        <Route path="/blog/create" element={<CreateBlog />} />
 
         <Route path="/auth" element={<Auth />}>
           <Route path="login" element={<Login />} />
