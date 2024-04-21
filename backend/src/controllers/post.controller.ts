@@ -206,7 +206,7 @@ const addPost = async (c: Context, next: Next) => {
   }
 
   try {
-    await prisma.posts.create({
+    const singlePost = await prisma.posts.create({
       data: {
         title: parseEditPostsSchema.data.title,
         content: parseEditPostsSchema.data.content,
@@ -217,11 +217,29 @@ const addPost = async (c: Context, next: Next) => {
       },
     });
 
-    return c.json({ success: true, message: "added post" }, 200);
+    return c.json(
+      {
+        success: true,
+        message: "added post",
+
+        post: {
+          id: singlePost.id,
+          slug: singlePost.slug,
+        },
+      },
+      200
+    );
   } catch (error) {
     console.log(error);
     await next();
   }
 };
 
-export { getAllUserPosts, deletePost, editPost, addPost, getAllPosts, getSinglePostWithSlug };
+export {
+  getAllUserPosts,
+  deletePost,
+  editPost,
+  addPost,
+  getAllPosts,
+  getSinglePostWithSlug,
+};

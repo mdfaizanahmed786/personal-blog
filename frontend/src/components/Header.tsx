@@ -52,6 +52,9 @@ function Header() {
               <Link onClick={logOutUser} className="hover:underline" to="">
                 Logout
               </Link>
+              <Link className="hover:underline" to="/blog/create">
+            Create Blog
+          </Link>
             </>
           ) : (
             <>

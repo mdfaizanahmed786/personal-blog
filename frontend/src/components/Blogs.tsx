@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { postRouteInstance } from "../lib/axios"
 import toast from "react-hot-toast"
 import Blog from "./Blog"
+
 export interface Post {
     id: string;
     title: string;
@@ -19,11 +20,6 @@ export interface Post {
       fullname: string;
     };
   }
-  
-//   interface PostsResponse {
-//     posts: Post[];
-//   }
-  
 
 function Blogs() {
     const [blogs, setBlogs] = useState([])

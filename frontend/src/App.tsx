@@ -14,8 +14,9 @@ import { Cookies } from "react-cookie";
 import { userRouteInstance } from "./lib/axios";
 import { setUser } from "./features/slices/authSlice";
 import SingleBlog from "./components/SingleBlog";
+import CreateBlog from "./components/CreateBlog";
 
-const cookies= new Cookies();
+const cookies = new Cookies();
 function SuspenseLayout() {
   return (
     <>
@@ -33,7 +34,7 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       const token = cookies.get("auth-token");
-    
+
       if (token) {
         const { data } = await userRouteInstance.get("/me", {
           headers: {
@@ -56,7 +57,9 @@ function App() {
         <Route element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="/blog/:slug" element={<SingleBlog />}/>
+          <Route path="/blog/:slug" element={<SingleBlog />} />
+          <Route path="/blog/create" element={<CreateBlog />} />
+
           <Route path="*" element={<NotFound />} />
           <Route path="/auth" element={<Auth />}>
             <Route path="login" element={<Login />} />
