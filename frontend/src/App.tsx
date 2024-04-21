@@ -54,7 +54,7 @@ function App() {
         <Toaster />
       </div>
       <Routes>
-        <Route element={<SuspenseLayout />}>
+        <Route path="/" element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="/blog/:slug" element={<SingleBlog />} />
