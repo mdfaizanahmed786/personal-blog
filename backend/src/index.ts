@@ -15,7 +15,9 @@ const app= new Hono<{
 }>({strict:false});
 
 app.use(logger())
-app.use(cors())
+app.use(cors({
+  origin: 'https://personal-blog-lemon-kappa.vercel.app'
+}));
 app.use(prettyJSON())
 
 // routes
