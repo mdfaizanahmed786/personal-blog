@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       const token = cookies.get("auth-token");
-      console.log(token, "TOKEN===>");
+    
       if (token) {
         const { data } = await userRouteInstance.get("/me", {
           headers: {
