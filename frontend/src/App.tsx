@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import store from "./store/store";
@@ -13,6 +13,8 @@ const About = React.lazy(() => import("./components/About"));
 const Home = React.lazy(() => import("./components/Home"));
 
 function SuspenseLayout() {
+  useEffect(() => {}, []);
+
   return (
     <>
       <Header />

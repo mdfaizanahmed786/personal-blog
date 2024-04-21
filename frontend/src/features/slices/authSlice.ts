@@ -1,6 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const authInitialState = {
+type TInitialState={
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: TUser | null;
+}
+
+type TUser={
+  id:string
+  username: string;
+
+};
+
+const authInitialState: TInitialState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,

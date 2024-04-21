@@ -4,6 +4,7 @@ import { Jwt } from "hono/utils/jwt";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import bcrypt from "bcryptjs";
+import { setCookie } from "hono/cookie";
 
 const signUpUser = async (c: Context, next: Next) => {
   const body = await c.req.json();
@@ -39,7 +40,12 @@ const signUpUser = async (c: Context, next: Next) => {
       },
     });
     const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
-
+     setCookie(c, "auth-token", token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
     return c.json(
       {
         success: true,
@@ -84,7 +90,12 @@ const loginUser = async (c: Context, next: Next) => {
     }
 
     const token = await Jwt.sign({ id: result.id }, c.env.JWT_SECRET);
-
+    setCookie(c, "auth-token", token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
     return c.json(
       { success: true, message: "Successfully logged in", token },
       200
