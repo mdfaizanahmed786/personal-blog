@@ -50,7 +50,7 @@ function App() {
         <Route path="/blog/create" element={<CreateBlog />} />
 
         <Route path="/auth" element={<Auth />}>
-          <Route path="login" element={<Login />} />
+          <Route  path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
         </Route>
         <Route path="*" element={<NotFound />} />
