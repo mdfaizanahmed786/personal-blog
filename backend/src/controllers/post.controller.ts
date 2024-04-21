@@ -28,7 +28,6 @@ const getAllUserPosts = async (c: Context, next: Next) => {
         user: {
           select: {
             name: true,
-            age: true,
             username: true,
             fullname: true,
           },

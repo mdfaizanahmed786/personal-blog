@@ -55,6 +55,7 @@ function App() {
         <Route element={<SuspenseLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="/blog/:id" element={<Auth />}/>
           <Route path="*" element={<NotFound />} />
           <Route path="/auth" element={<Auth />}>
             <Route path="login" element={<Login />} />
