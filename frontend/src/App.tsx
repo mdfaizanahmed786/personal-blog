@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { Provider } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
-import store from "./store/store";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -11,10 +10,12 @@ const Login = React.lazy(() => import("./components/auth/Login"));
 const NotFound = React.lazy(() => import("./components/NotFound"));
 const About = React.lazy(() => import("./components/About"));
 const Home = React.lazy(() => import("./components/Home"));
+import { Cookies } from "react-cookie";
+import { userRouteInstance } from "./lib/axios";
+import { setUser } from "./features/slices/authSlice";
 
+const cookies= new Cookies();
 function SuspenseLayout() {
-  useEffect(() => {}, []);
-
   return (
     <>
       <Header />
@@ -27,8 +28,26 @@ function SuspenseLayout() {
   );
 }
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = cookies.get("auth-token");
+      console.log(token, "TOKEN===>");
+      if (token) {
+        const { data } = await userRouteInstance.get("/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (data.success) {
+          dispatch(setUser({ user: data.user, token, isAuthenticated: true }));
+        }
+      }
+    };
+    fetchUser();
+  }, [dispatch]);
   return (
-    <Provider store={store}>
+    <>
       <div>
         <Toaster />
       </div>
@@ -43,7 +62,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </Provider>
+    </>
   );
 }
 

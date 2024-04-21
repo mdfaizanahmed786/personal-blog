@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/slices/authSlice";
 import { RootState } from "../../store/store";
 
+
 function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Signup() {
     fullname: "",
     age: "",
     password: "",
-    name: "",
+   name:""
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +32,7 @@ function Signup() {
           isLoading: true,
         })
       );
-      const { data } = await userRouteInstance.post("/signup", userInfo);
+      const { data } = await userRouteInstance.post("/signup", {...userInfo, name: userInfo.fullname},);
       if (data.success) {
         toast.success(data.message);
         dispatch(

@@ -41,10 +41,11 @@ const signUpUser = async (c: Context, next: Next) => {
     });
     const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
      setCookie(c, "auth-token", token, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: true,
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
+      sameSite: 'None',
+      maxAge: 60 * 60 * 24 * 7, 
+    
     });
     return c.json(
       {
@@ -91,13 +92,17 @@ const loginUser = async (c: Context, next: Next) => {
 
     const token = await Jwt.sign({ id: result.id }, c.env.JWT_SECRET);
     setCookie(c, "auth-token", token, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: true,
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
+    sameSite: 'None', 
+    maxAge: 60 * 60 * 24 * 7,
+   
     });
     return c.json(
-      { success: true, message: "Successfully logged in", token },
+      { success: true, message: "Successfully logged in", token, user: {
+        id: result.id,
+        username: result.username,
+      } },
       200
     );
   } catch (error) {

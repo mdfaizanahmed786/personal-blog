@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const userRouteInstance = axios.create({
-  baseURL: "http://127.0.0.1:8787/api/v1/user",
+  baseURL: "http://localhost:8787/api/v1/user",
   headers: {
     "Content-Type": "application/json",
   },

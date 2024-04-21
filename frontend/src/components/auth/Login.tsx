@@ -31,9 +31,9 @@ function Login() {
   
       if (data.success) {
         toast.success(data.message);
-
+       console.log(data, "DATA===>")
         dispatch(
-          setUser({ user: data.user, token: data.token, isAuthenticated: true })
+          setUser({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false})
         );
         setTimeout(() => {
           navigate("/");
