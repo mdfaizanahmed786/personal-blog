@@ -15,7 +15,10 @@ const app= new Hono<{
 }>({strict:false});
 
 app.use(logger())
-app.use(cors())
+app.use(cors({
+origin:["http://localhost:5173"],
+  credentials: true,
+}))
 app.use(prettyJSON())
 
 // routes
