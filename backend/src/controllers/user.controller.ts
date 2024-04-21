@@ -40,12 +40,11 @@ const signUpUser = async (c: Context, next: Next) => {
       },
     });
     const token = await Jwt.sign({ id }, c.env.JWT_SECRET);
-     setCookie(c, "auth-token", token, {
+    setCookie(c, "auth-token", token, {
       // httpOnly: true,
       secure: true,
-      sameSite: 'None',
-      maxAge: 60 * 60 * 24 * 7, 
-    
+      sameSite: "None",
+      maxAge: 60 * 60 * 24 * 7,
     });
     return c.json(
       {
@@ -94,15 +93,19 @@ const loginUser = async (c: Context, next: Next) => {
     setCookie(c, "auth-token", token, {
       // httpOnly: true,
       secure: true,
-    sameSite: 'None', 
-    maxAge: 60 * 60 * 24 * 7,
-   
+      sameSite: "None",
+      maxAge: 60 * 60 * 24 * 7,
     });
     return c.json(
-      { success: true, message: "Successfully logged in", token, user: {
-        id: result.id,
-        username: result.username,
-      } },
+      {
+        success: true,
+        message: "Successfully logged in",
+        token,
+        user: {
+          id: result.id,
+          username: result.username,
+        },
+      },
       200
     );
   } catch (error) {
@@ -187,4 +190,20 @@ const getUserInfo = async (c: Context, next: Next) => {
   }
 };
 
-export { signUpUser, loginUser, getAllUsers, deleteUser, getUserInfo };
+const logOutUser = async (c: Context, next: Next) => {
+  setCookie(c, "auth-token", "", {
+    maxAge: 0,
+    secure: true,
+    sameSite: "None",
+  });
+  return c.json({ success: true, message: "Logged out successfully" }, 200);
+};
+
+export {
+  signUpUser,
+  loginUser,
+  getAllUsers,
+  deleteUser,
+  getUserInfo,
+  logOutUser,
+};

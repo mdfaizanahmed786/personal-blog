@@ -3,6 +3,7 @@ import {
   deleteUser,
   getAllUsers,
   getUserInfo,
+  logOutUser,
   loginUser,
   signUpUser,
 } from "../controllers/user.controller";
@@ -13,10 +14,12 @@ app.post("/signup", signUpUser);
 
 app.post("/login", loginUser);
 
-app.get("/all", userMiddleware,  getAllUsers);
+app.use("*", userMiddleware);
+app.get("/all", getAllUsers);
 
-app.delete("/", userMiddleware, deleteUser);
+app.delete("/", deleteUser);
 
-app.get("/me", userMiddleware, getUserInfo)
+app.get("/me", getUserInfo);
+app.get("/logout", logOutUser);
 
 export default app;
