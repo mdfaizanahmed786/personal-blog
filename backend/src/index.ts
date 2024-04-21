@@ -16,7 +16,7 @@ const app= new Hono<{
 
 app.use(logger())
 app.use(cors({
-origin:["http://localhost:5173"],
+origin:["http://localhost:5173", "https://personal-blog-lemon-kappa.vercel.app/"],
   credentials: true,
 }))
 app.use(prettyJSON())
