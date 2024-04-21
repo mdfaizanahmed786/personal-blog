@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "^/(?!auth/login|about|contact)(.*)", "destination": "/index.html" }
+      { "source": "^/(?!auth/login|auth/signup|about|contact)(.*)", "destination": "/index.html" }
     ]
   }
   
